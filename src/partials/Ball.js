@@ -8,6 +8,8 @@ export default class Ball {
     this.boardHeight = boardHeight;
     this.direction = 1;
 
+    this.ping = new Audio('public/sounds/pong-04.wav');
+
     this.reset();
   }
 
@@ -28,6 +30,7 @@ export default class Ball {
       if (this.vx > 0) { 
         let paddle = paddle2.coordinates(paddle2.x, paddle2.y, paddle2.width, paddle2.height)
         let [leftX, rightX, topY, bottomY] = paddle;
+
         if (
           this.x + this.radius >= leftX &&
           this.x + this.radius <= rightX &&
@@ -35,17 +38,20 @@ export default class Ball {
           this.y <= bottomY
         ) {
           this.vx = -this.vx;
+          this.ping.play();
         }
       } else {
           let paddle = paddle1.coordinates(paddle1.x, paddle1.y, paddle1.width, paddle1.height)
           let [leftX, rightX, topY, bottomY] = paddle;
+
           if (
             this.x - this.radius >= leftX &&
             this.x - this.radius <= rightX &&
             this.y >= topY &&
             this.y <= bottomY
           ) {
-            this.vx = -çthis.vx;
+            this.vx = -this.vx;
+            this.ping.play();
           }
       }
 }
@@ -54,15 +60,18 @@ export default class Ball {
     this.x = this.boardWidth / 2;
     this.y = this.boardHeight / 2;
 
-    this.vy = Math.floor(Math.random() * 10 - 5); 
-
-    this.vx = this.direction * (6 - Math.abs(this.vy));
+   this.vy = 0;
 
     while (this.vy === 0) {
         this.vy = Math.floor(Math.random() * 10 - 5);
+        this.vx = this.direction * (6 - Math.abs(this.vy));
     }
   }
 
+  goal(player) {
+    player.score++;
+    this.reset();
+  }
 
   render(svg, paddle1, paddle2){
     this.x += this.vx;
@@ -74,10 +83,23 @@ export default class Ball {
     let ball = document.createElementNS( SVG_NS, 'circle');
         ball.setAttributeNS(null,'r', this.radius);
         ball.setAttributeNS(null, 'cx', this.x);
-		ball.setAttributeNS(null, 'cy', this.y);
+		    ball.setAttributeNS(null, 'cy', this.y);
         ball.setAttributeNS(null, 'fill', '#1abc9c');
-
         svg.appendChild(ball);
+
+        const rightGoal = this.x + this.radius >= this.boardWidth;
+        const leftGoal = this.x - this.radius <= 0;
+
+        if (rightGoal) {
+          this.goal(paddle1);
+          this.direction = 1;
+          console.log('player 1: ' + paddle1.score);
+
+        } else if (leftGoal) {
+          this.goal(paddle2);
+          this.direction = -1;
+          console.log('player 2: ' + paddle2.score);
+        }
   }
 
 }

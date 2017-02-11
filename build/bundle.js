@@ -465,7 +465,7 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var Game = function () {
-		function Game(element, width, height, spacebar) {
+		function Game(element, width, height) {
 			var _this = this;
 
 			_classCallCheck(this, Game);
@@ -489,7 +489,7 @@
 
 			document.addEventListener('keydown', function (event) {
 				switch (event.keyCode) {
-					case _settings.KEYS.spacebar:
+					case _settings.KEYS.spaceBar:
 						_this.pause = !_this.pause;
 						break;
 				}
@@ -513,9 +513,10 @@
 				this.gameElement.appendChild(svg);
 
 				this.board.render(svg);
+				this.ball.render(svg, this.paddle1, this.paddle2);
+
 				this.paddle1.render(svg);
 				this.paddle2.render(svg);
-				this.ball.render(svg);
 			}
 		}]);
 
@@ -649,6 +650,15 @@
 	      this.y = Math.min(this.boardHeight - this.height, this.y + this.speed);
 	    }
 	  }, {
+	    key: 'coordinates',
+	    value: function coordinates(x, y, width, height) {
+	      var leftX = x;
+	      var rightX = x + width;
+	      var topY = y;
+	      var bottomY = y + height;
+	      return [leftX, rightX, topY, bottomY];
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render(svg) {
 
@@ -678,6 +688,8 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -712,6 +724,35 @@
 	      }
 	    }
 	  }, {
+	    key: 'paddleCollision',
+	    value: function paddleCollision(paddle1, paddle2) {
+	      if (this.vx > 0) {
+	        var paddle = paddle2.coordinates(paddle2.x, paddle2.y, paddle2.width, paddle2.height);
+
+	        var _paddle = _slicedToArray(paddle, 4),
+	            leftX = _paddle[0],
+	            rightX = _paddle[1],
+	            topY = _paddle[2],
+	            bottomY = _paddle[3];
+
+	        if (this.x + this.radius >= leftX && this.x + this.radius <= rightX && this.y >= topY && this.y <= bottomY) {
+	          this.vx = -this.vx;
+	        }
+	      } else {
+	        var _paddle2 = paddle1.coordinates(paddle1.x, paddle1.y, paddle1.width, paddle1.height);
+
+	        var _paddle3 = _slicedToArray(_paddle2, 4),
+	            _leftX = _paddle3[0],
+	            _rightX = _paddle3[1],
+	            _topY = _paddle3[2],
+	            _bottomY = _paddle3[3];
+
+	        if (this.x - this.radius >= _leftX && this.x - this.radius <= _rightX && this.y >= _topY && this.y <= _bottomY) {
+	          this.vx = -çthis.vx;
+	        }
+	      }
+	    }
+	  }, {
 	    key: 'reset',
 	    value: function reset() {
 	      this.x = this.boardWidth / 2;
@@ -727,11 +768,12 @@
 	    }
 	  }, {
 	    key: 'render',
-	    value: function render(svg) {
+	    value: function render(svg, paddle1, paddle2) {
 	      this.x += this.vx;
 	      this.y += this.vy;
 
 	      this.wallColission();
+	      this.paddleCollision(paddle1, paddle2);
 
 	      var ball = document.createElementNS(_settings.SVG_NS, 'circle');
 	      ball.setAttributeNS(null, 'r', this.radius);

@@ -6,6 +6,8 @@ import Paddle from './Paddle';
 
 import Ball from './Ball';
 
+import Score from './Score';
+
 export default class Game {
 
 	constructor(element, width, height) {
@@ -40,6 +42,9 @@ export default class Game {
 			KEYS.down
 		);
 
+		this.score1 = new Score(this.width / 2 - 50, 30, 30);
+		this.score2 = new Score(this.width / 2 + 45, 30, 30);
+
 		this.ball = new Ball(8, this.width, this.height);
 
 		 document.addEventListener('keydown', event => {
@@ -70,6 +75,9 @@ export default class Game {
 		
 		this.paddle1.render(svg);
 		this.paddle2.render(svg);
+
+		this.score1.render(svg, this.paddle1.score);
+		this.score2.render(svg, this.paddle2.score);
 
 	}
 
