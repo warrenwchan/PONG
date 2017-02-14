@@ -36,6 +36,9 @@ The Game.js holds all the code to make the classes we created function. to call 
 February 14th, 2017
 My first time creating a game and i have to say this was a challenging run. Most of the codes were straight forward to keep up with and the concept behind everything definitely more sense to me now that ive got more knowledge of javascript but ive also ran into some issues learning how to construct most codes and using some of the new syntax as well. as of today i was unable to implement new features to the game but i feel that with more practice ill be able to do so in the future. Ive definitely gained a new level of appreciation for game developers.
 
+** UPDATE February 14th, 2017 1:03 pm
+new fucntion added in game allows us to create a new ball using the n key press and to gremove ball we use the m key. i did this with an event lister and attached the keys n and m in the setting.js file.
+
 SVGs are alot of fun. learning how to build a basic vector shape is much more difficult than ive imagined. Especially coming from a graphics background using adobe illustrator is alot easier but understanding how to manually do this using html code is actually quite interesting. 
 
 # Pong Game
@@ -61,3 +64,8 @@ A basic pong game using SVGs.
 **Player 2:**
 * ▲ : up
 * ▼: down
+
+**New Ball**
+* n: new ball
+* m: remove ball
+
