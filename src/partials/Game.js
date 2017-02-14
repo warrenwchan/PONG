@@ -47,6 +47,19 @@ export default class Game {
 
 		this.ball = new Ball(8, this.width, this.height);
 
+		this.ball2 = new Ball();
+
+		document.addEventListener('keydown', event => {
+			switch (event.keyCode) {
+				case KEYS.n:
+					this.ball2 = new Ball(8, this.width, this.height, '#fff');
+					break;
+				case KEYS.m:
+					this.ball2 = new Ball();
+					break;
+			}
+		});
+
 		 document.addEventListener('keydown', event => {
 			switch (event.keyCode) {
 				case KEYS.spaceBar:
@@ -72,6 +85,7 @@ export default class Game {
 
 		this.board.render(svg);
 		this.ball.render(svg, this.paddle1, this.paddle2);
+		this.ball2.render(svg, this.paddle1, this.paddle2);
 		
 		this.paddle1.render(svg);
 		this.paddle2.render(svg);
