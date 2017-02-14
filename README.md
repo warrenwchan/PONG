@@ -64,8 +64,11 @@ A basic pong game using SVGs.
 **Player 2:**
 * ▲ : up
 * ▼: down
+<<<<<<< HEAD
 
 **New Ball**
 * n: new ball
 * m: remove ball
 
+=======
+>>>>>>> b827459bc5ec5b773296d44abcab6e9f3d0e7ad0
