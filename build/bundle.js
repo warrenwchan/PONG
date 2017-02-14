@@ -460,6 +460,10 @@
 
 	var _Ball2 = _interopRequireDefault(_Ball);
 
+	var _Score = __webpack_require__(14);
+
+	var _Score2 = _interopRequireDefault(_Score);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -484,6 +488,9 @@
 			this.paddle1 = new _Paddle2.default(this.height, this.paddleWidth, this.paddleHeight, this.boardGap, (this.height - this.paddleHeight) / 2, _settings.KEYS.a, _settings.KEYS.z);
 
 			this.paddle2 = new _Paddle2.default(this.height, this.paddleWidth, this.paddleHeight, this.width - this.boardGap - this.paddleWidth, (this.height - this.paddleHeight) / 2, _settings.KEYS.up, _settings.KEYS.down);
+
+			this.score1 = new _Score2.default(this.width / 2 - 50, 30, 30);
+			this.score2 = new _Score2.default(this.width / 2 + 45, 30, 30);
 
 			this.ball = new _Ball2.default(8, this.width, this.height);
 
@@ -517,6 +524,9 @@
 
 				this.paddle1.render(svg);
 				this.paddle2.render(svg);
+
+				this.score1.render(svg, this.paddle1.score);
+				this.score2.render(svg, this.paddle2.score);
 			}
 		}]);
 
@@ -624,7 +634,7 @@
 	    this.height = height;
 	    this.x = x;
 	    this.y = y;
-	    this.speed = 10;
+	    this.speed = 30;
 	    this.score = 0;
 
 	    document.addEventListener('keydown', function (event) {
@@ -706,6 +716,8 @@
 	    this.boardHeight = boardHeight;
 	    this.direction = 1;
 
+	    this.ping = new Audio('public/sounds/pong-02.wav');
+
 	    this.reset();
 	  }
 
@@ -737,6 +749,7 @@
 
 	        if (this.x + this.radius >= leftX && this.x + this.radius <= rightX && this.y >= topY && this.y <= bottomY) {
 	          this.vx = -this.vx;
+	          this.ping.play();
 	        }
 	      } else {
 	        var _paddle2 = paddle1.coordinates(paddle1.x, paddle1.y, paddle1.width, paddle1.height);
@@ -748,7 +761,8 @@
 	            _bottomY = _paddle3[3];
 
 	        if (this.x - this.radius >= _leftX && this.x - this.radius <= _rightX && this.y >= _topY && this.y <= _bottomY) {
-	          this.vx = -çthis.vx;
+	          this.vx = -this.vx;
+	          this.ping.play();
 	        }
 	      }
 	    }
@@ -758,13 +772,18 @@
 	      this.x = this.boardWidth / 2;
 	      this.y = this.boardHeight / 2;
 
-	      this.vy = Math.floor(Math.random() * 10 - 5);
-
-	      this.vx = this.direction * (6 - Math.abs(this.vy));
+	      this.vy = 0;
 
 	      while (this.vy === 0) {
 	        this.vy = Math.floor(Math.random() * 10 - 5);
+	        this.vx = this.direction * (6 - Math.abs(this.vy));
 	      }
+	    }
+	  }, {
+	    key: 'goal',
+	    value: function goal(player) {
+	      player.score++;
+	      this.reset();
 	    }
 	  }, {
 	    key: 'render',
@@ -780,8 +799,20 @@
 	      ball.setAttributeNS(null, 'cx', this.x);
 	      ball.setAttributeNS(null, 'cy', this.y);
 	      ball.setAttributeNS(null, 'fill', '#1abc9c');
-
 	      svg.appendChild(ball);
+
+	      var rightGoal = this.x + this.radius >= this.boardWidth;
+	      var leftGoal = this.x - this.radius <= 0;
+
+	      if (rightGoal) {
+	        this.goal(paddle1);
+	        this.direction = 1;
+	        console.log('player 1: ' + paddle1.score);
+	      } else if (leftGoal) {
+	        this.goal(paddle2);
+	        this.direction = -1;
+	        console.log('player 2: ' + paddle2.score);
+	      }
 	    }
 	  }]);
 
@@ -789,6 +820,51 @@
 	}();
 
 	exports.default = Ball;
+
+/***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _settings = __webpack_require__(10);
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Score = function () {
+	  function Score(x, y, size) {
+	    _classCallCheck(this, Score);
+
+	    this.x = x;
+	    this.y = y;
+	    this.size = size;
+	  }
+
+	  _createClass(Score, [{
+	    key: 'render',
+	    value: function render(svg, score) {
+	      var text = document.createElementNS(_settings.SVG_NS, 'text');
+	      text.setAttributeNS(null, 'x', this.x);
+	      text.setAttributeNS(null, 'y', this.y);
+	      text.setAttributeNS(null, 'font-size', 'this.size');
+	      text.setAttributeNS(null, 'font-family', 'Silkscreen Web', 'monotype');
+	      text.setAttributeNS(null, 'fill', '#fff');
+	      text.innerHTML = score;
+
+	      svg.appendChild(text);
+	    }
+	  }]);
+
+	  return Score;
+	}();
+
+	exports.default = Score;
 
 /***/ }
 /******/ ]);

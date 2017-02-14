@@ -50,6 +50,6 @@ module.exports = {
 		}
 	},
 	plugins: [
-		new OpenBrowserPlugin({ url: 'http://localhost:3000/'}),
+		new OpenBrowserPlugin({ url: 'http://localhost:3000/' }),
 	]
 };
