@@ -724,13 +724,14 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var Ball = function () {
-	  function Ball(radius, boardWidth, boardHeight) {
+	  function Ball(radius, boardWidth, boardHeight, fill) {
 	    _classCallCheck(this, Ball);
 
 	    this.radius = radius;
 	    this.boardWidth = boardWidth;
 	    this.boardHeight = boardHeight;
 	    this.direction = 1;
+	    this.fill = fill;
 
 	    this.ping = new Audio('public/sounds/pong-02.wav');
 
@@ -823,11 +824,9 @@
 	      if (rightGoal) {
 	        this.goal(paddle1);
 	        this.direction = 1;
-	        console.log('player 1: ' + paddle1.score);
 	      } else if (leftGoal) {
 	        this.goal(paddle2);
 	        this.direction = -1;
-	        console.log('player 2: ' + paddle2.score);
 	      }
 	    }
 	  }]);

@@ -94,13 +94,10 @@ export default class Ball {
     if (rightGoal) {
       this.goal(paddle1);
       this.direction = 1;
-      console.log('player 1: ' + paddle1.score);
 
     } else if (leftGoal) {
       this.goal(paddle2);
       this.direction = -1;
-      console.log('player 2: ' + paddle2.score);
     }
   }
-
 }

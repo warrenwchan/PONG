@@ -18,6 +18,7 @@ export default class Game {
 		this.boardGap = 10;
 		this.paddleWidth = 8;
 		this.paddleHeight = 56;
+		this.radius = 100;
 		this.pause = false;
 
 		this.board = new Board(this.width, this.height);
@@ -45,14 +46,13 @@ export default class Game {
 		this.score1 = new Score(this.width / 2 - 50, 30, 30);
 		this.score2 = new Score(this.width / 2 + 45, 30, 30);
 
-		this.ball = new Ball(8, this.width, this.height);
-
-		this.ball2 = new Ball();
+		this.ball = new Ball(this.radius, this.width, this.height);
+		this.ball2 = new Ball(this.radius, this.width, this.height);
 
 		document.addEventListener('keydown', event => {
 			switch (event.keyCode) {
 				case KEYS.n:
-					this.ball2 = new Ball(8, this.width, this.height, '#fff');
+					this.ball2 = new Ball(8, this.width, this.height);
 					break;
 				case KEYS.m:
 					this.ball2 = new Ball();
