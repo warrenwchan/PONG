@@ -11,25 +11,21 @@ SVG stands for Scalable Vector Graphics. SVG's are XML code which creates refere
 With the board partials we broke things down by creating the game board itself. This contained two SVGs; the rectangle and the dotted lines as a divider. This game partials doesn't really do a whole lot but a surface for our other game pieces to function on.
 <img width="1680" alt="screen shot 2017-02-13 at 10 22 50 pm" src="https://cloud.githubusercontent.com/assets/24995518/22922635/73c8dbaa-f253-11e6-97cb-87d3fdd70842.png">
 
---
 
 **Paddles**
 Because we used classes in our Javascript we’re able to create multiple objects with same properties but different values. We can render two paddles with the same properties but they have different values. Such as our two paddles. one is located on the left and the other is on the right.
 <img width="1680" alt="screen shot 2017-02-13 at 10 24 06 pm" src="https://cloud.githubusercontent.com/assets/24995518/22922578/3c12d742-f253-11e6-8f03-a3e8fab535be.png">
 
---
 
 **Ball**
 The ball partial is a lot more complex. With in the ball partial we had to set the boundaries of where the ball can move and go. To do this we added a wall collision function. The ball also has to detect the paddle collision. So an If statement is passed though being if the ball hits paddle 1 versus else the ball hits paddle 2, the ball will bounce back according to the side of the radius that has made contact. The ball also has to register a goal function. When the ball passes either side of the board width, this will trigger a point for the player and the ball resets and starts in the centre of the board.
 <img width="1680" alt="screen shot 2017-02-13 at 10 24 19 pm" src="https://cloud.githubusercontent.com/assets/24995518/22922667/9245e7a8-f253-11e6-8d0d-532159f6718d.png">
 
---
 
 **Score**
 The score class is quite simple. Like with all the other classes we still use SVG incase of scaling to keep consistent resolution. Later we can implement a score increment system where the number gets 1 added to it each time a player scores a point. This will happen in the Game.js
 <img width="1680" alt="screen shot 2017-02-12 at 12 34 15 pm" src="https://cloud.githubusercontent.com/assets/24995518/22922726/c1e4cd8a-f253-11e6-98a4-3c986d7b926a.png">
 
---
 
 And to put this all together we use the Game class which contains all the codes to make this game function.
 
@@ -46,7 +42,6 @@ new function added in game allows us to create a new ball using the n key press 
 
 <img width="1680" alt="screen shot 2017-02-14 at 2 17 45 pm" src="https://cloud.githubusercontent.com/assets/24995518/22952078/6c71237c-f2c0-11e6-8f0d-9d0da8f4d917.png">
 
---
 SVGs are alot of fun. learning how to build a basic vector shape is much more difficult than ive imagined. Especially coming from a graphics background using adobe illustrator is alot easier but understanding how to manually do this using html code is actually quite interesting. 
 
 # Pong Game
